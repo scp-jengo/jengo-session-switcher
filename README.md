@@ -14,3 +14,7 @@ A small Windows app (PowerShell + WPF, no build step) that lists all your Claude
 Requires Windows 10/11, Windows PowerShell 5.1 and Windows Terminal. Sessions are read from `~/.claude/sessions`, titles from the session transcripts, windows via UI Automation.
 
 The A/W/M detection looks for the Jengo-specific tools named above; adapt the patterns in `JengoSessions.ps1` for your own setup.
+
+## Install (MSI)
+
+Download `JengoSessions-1.0.0.msi` from the [latest release](https://github.com/scp-jengo/jengo-session-switcher/releases/latest) and run it. It installs per user (no admin needed) and adds a **Jengo Sessions** shortcut to the Start menu. Rebuild with `installer\build-msi.ps1 -Version x.y.z` (needs the WiX 5 dotnet tool).

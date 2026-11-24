@@ -1,0 +1,40 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Jengo Sessions"
+           Manufacturer="Jengo"
+           Version="$(var.Version)"
+           UpgradeCode="6b1f6c4e-3d52-4b7a-9a0e-5c2f8d7e1a44"
+           Scope="perUser"
+           Compressed="yes">
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Jengo Sessions is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="INSTALLFOLDER" Name="Jengo Sessions">
+        <Component Id="AppFiles" Guid="a3d9c1f0-7b2e-4c55-8d1a-2e6f9b0c4d71">
+          <File Id="Ps1" Source="$(var.SrcDir)\JengoSessions.ps1" KeyPath="yes" />
+          <File Id="Cmd" Source="$(var.SrcDir)\JengoSessions.cmd" />
+          <File Id="Readme" Source="$(var.SrcDir)\README.md" />
+          <RemoveFolder Id="RmInstall" On="uninstall" />
+          <RegistryValue Root="HKCU" Key="Software\Jengo\JengoSessions" Name="installed" Type="integer" Value="1" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Component Id="StartMenuShortcut" Guid="e81b5a2c-94f3-4d06-b7c8-1a0d3f5e9b22">
+        <Shortcut Id="Sc" Name="Jengo Sessions"
+                  Description="Live list of your Claude Code sessions"
+                  Target="[SystemFolder]WindowsPowerShell\v1.0\powershell.exe"
+                  Arguments="-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -STA -File &quot;[INSTALLFOLDER]JengoSessions.ps1&quot;"
+                  WorkingDirectory="INSTALLFOLDER" />
+        <RegistryValue Root="HKCU" Key="Software\Jengo\JengoSessions" Name="shortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+
+    <Feature Id="Main" Title="Jengo Sessions" Level="1">
+      <ComponentRef Id="AppFiles" />
+      <ComponentRef Id="StartMenuShortcut" />
+    </Feature>
+  </Package>
+</Wix>
